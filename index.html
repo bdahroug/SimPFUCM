@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>SimPFUCM</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Verdana, Monospace;
+				font-size: 12px;
+				background: #444444;
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+			}
+			a {
+				color: #f80;
+			}
+            #slider{
+            	writing-mode: bt-lr; /* IE */
+            	-webkit-appearance: slider-vertical; /* WebKit */
+            }
+			ol{
+				font-style: italic;
+				color: #bbb;
+				margin: 0;
+				padding-left: 10px;
+				height: 15px;
+				background-color: transparent;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="3rdParty/three.js"></script>
+		<script src="3rdParty/TrackballControls.js"></script>
+		<script src='3rdParty/dat.gui.min.js'></script>
+		
+		<script src="control_panel.js"></script>
+		<script src="surgicalTool.js"></script>
+		<script src="main.js"></script>
+		<script>
+			//! our javascript here
+		</script>
+
+		<div style="position: absolute; top: 10px; left: 10px; color: rgb(0, 0, 0);">
+			Simulator of Path Following Under Constraints Motion <br><br>
+			Click on 'A' to show/hide the axes<br>
+			Click on 'C' to show/hide camera frustrum<br>
+			Use mouse wheel on sliders to move smoothly<br>
+		</div>
+		<div style="position: absolute; bottom: 10px; right: 10px; color: rgb(0, 0, 0);">DAHROUG &copy; 2018</div>
+	</body>
+	</body>
+
+</html>
