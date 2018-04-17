@@ -5,7 +5,7 @@ var cameraScene, rendererScene;
 var cameraViewContainer = document.createElement('div');
 var trackballControls;
 var ctrlPanel; 
-var groupHoledPlane, surgTool;
+var groupHoledPlane, holedPlan, surgTool;
 var cameraToolTip, rendererCamTool;
 
 
@@ -106,12 +106,14 @@ function init() {
     scene.add( gridScene );
 	
 
-	// create a plane with a hole
-	console.log("Creating the plane ...");
-	groupHoledPlane = new THREE.Group();
+	// create a plan with an orifice
+    console.log("Creating the plane ...");
+    holedPlan = new planWithOrifice();
+    scene.add( holedPlan.meshGroup );
+	/*groupHoledPlane = new THREE.Group();
 	scene.add( groupHoledPlane );
 
-	// rectangulaire plane
+	// rectangulaire plan
 	var rectLength = 80, rectWidth = 40;
 	var rectShape = new THREE.Shape();
 	rectShape.moveTo( 0, 0 );
@@ -127,11 +129,11 @@ function init() {
 	holePath.absarc( rectLength/2, rectWidth/2, holeRadius, 0, Math.PI * 2, false );
 	rectShape.holes.push( holePath );
 
-	console.log("Extruding the holed plane ...");
+	console.log("Extruding the holed plan ...");
 	var extrudeSettings = { amount: 3, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
 	var geomHoledPlane = new THREE.ExtrudeGeometry( rectShape, extrudeSettings );
 	var meshHoledPlane = new THREE.Mesh( geomHoledPlane, new THREE.MeshPhongMaterial( { color: 0xf08000 } ) );
-	//groupHoledPlane.add( meshHoledPlane );
+	groupHoledPlane.add( meshHoledPlane );*/
 
 
 	/*// create the Coordinate Reference Frame of the incision hole
@@ -139,12 +141,12 @@ function init() {
 	groupHoledPlane.add( incisionCRF );*/
 
 
-	groupHoledPlane.rotation.x = 90 * ( Math.PI / 180 );
+	/*groupHoledPlane.rotation.x = 90 * ( Math.PI / 180 );
 	groupHoledPlane.rotation.y = 90 * ( Math.PI / 180 );
 	groupHoledPlane.rotation.z = 0;
-	//groupHoledPlane.position.x = -rectLength/2;
+	groupHoledPlane.position.x = -10;//-rectLength/2;
 	groupHoledPlane.position.y = -rectLength/2;
-	//groupHoledPlane.position.z = 0;
+	//groupHoledPlane.position.z = 0;*/
 
 
 	// create the rigid surgical tool
@@ -212,8 +214,8 @@ var animate = function () {
     ctrlPanel.updateDisplay();	
 	trackballControls.update();
     
-    console.log(surgTool.w_M_e);
-	surgTool.updateToolCRF();
+    //console.log(surgTool.w_M_e);
+	surgTool.updateAll();
 
     updateCameraOnRobot();
 	rendererScene.render( scene, cameraScene );

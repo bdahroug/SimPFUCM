@@ -11,7 +11,7 @@ var DOFs = function () {
     this.rotationZ = 0;
 }
 
-var incisionHole = function () {
+var incisionOrifice = function () {
     this.radius = 3;
 }
 
@@ -50,9 +50,9 @@ var ControlPanel = function(sceneContainer,externalViewCanvasId,onControlPanelCh
     }
 
     // folder incision
-    this.incision = new incisionHole(); 
+    this.incision = new incisionOrifice(); 
     this.folderIncisionValue = this.canvas.addFolder('Incision values');
-    this.folderIncisionValue.add(this.incision, 'radius', 0, 5).step(0.1).listen(); //in mm
+    this.folderIncisionValue.add(this.incision, 'radius', 1, 5).step(0.1).listen(); //in mm
 
     this.folderIncisionValue.__controllers[0].onChange( function( value ) {
         onControlPanelChange( this );
@@ -67,6 +67,7 @@ var ControlPanel = function(sceneContainer,externalViewCanvasId,onControlPanelCh
         else div.style.visibility = "hidden";
     }};
     this.canvas.add(obj,'add').name("Show-hide camera");
+    
 }
 
 /**
@@ -101,9 +102,9 @@ ControlPanel.prototype.setMinMax = function(idx, min, max) {
 ControlPanel.prototype.getEndEffectorValues = function(){
     var w_pose_e = new Array(6);
     //console.log(this.endEffector);
-    w_pose_e[0] = this.endEffector.translationX;// / 1000; // to meters
-    w_pose_e[1] = this.endEffector.translationY;// / 1000;
-    w_pose_e[2] = this.endEffector.translationZ;// / 1000;
+    w_pose_e[0] = this.endEffector.translationX; // in mm
+    w_pose_e[1] = this.endEffector.translationY;
+    w_pose_e[2] = this.endEffector.translationZ;
     w_pose_e[3] = this.endEffector.rotationX / 180.0 * Math.PI; //to radians
     w_pose_e[4] = this.endEffector.rotationY / 180.0 * Math.PI;
     w_pose_e[5] = this.endEffector.rotationZ / 180.0 * Math.PI;
@@ -111,9 +112,9 @@ ControlPanel.prototype.getEndEffectorValues = function(){
 }
 
 ControlPanel.prototype.setEndEffectorValues = function( w_pose_e ){
-    this.endEffector.translationX = w_pose_e[0] ;//* 1000; // to mm
-    this.endEffector.translationY = w_pose_e[1] ;//* 1000;
-    this.endEffector.translationZ = w_pose_e[2] ;//* 1000;
+    this.endEffector.translationX = w_pose_e[0]; // in mm
+    this.endEffector.translationY = w_pose_e[1];
+    this.endEffector.translationZ = w_pose_e[2];
     this.endEffector.rotationX = w_pose_e[3] / Math.PI * 180.0; // to degrees
     this.endEffector.rotationY = w_pose_e[4] / Math.PI * 180.0;
     this.endEffector.rotationZ = w_pose_e[5] / Math.PI * 180.0;

@@ -9,7 +9,7 @@ var rigidSurgicalTool = class {
         this.w_M_e = new THREE.Matrix4;
 
         this.e_M_t = new THREE.Matrix4;
-        this.e_M_t.elements[8] = this.length;
+        this.e_M_t.elements[7] = this.length;
         console.log( "   e_M_t = \n" + this.e_M_t.elements );
         
         this.w_M_t = new THREE.Matrix4;
@@ -28,11 +28,11 @@ var rigidSurgicalTool = class {
         var sphereRadius = 3;
         var sphereWidthSegments= 32;
         var sphereHeightSegments = 32;
-        var sphereColor = 0x2194ce;
+        var sphereColor = 0x012d70;//2194ce;
         var geomSphere = new THREE.SphereGeometry( sphereRadius, sphereWidthSegments, sphereHeightSegments );
         var matSphere = new THREE.MeshPhongMaterial( {color: sphereColor} );
         this.sphereBase = new THREE.Mesh( geomSphere, matSphere );
-        this.sphereBase.matrixAutoUpdate = false;
+        //this.sphereBase.matrixAutoUpdate = false;
         this.mesh.add( this.sphereBase );
 
         // create the tool body
@@ -40,7 +40,7 @@ var rigidSurgicalTool = class {
         var cyclRadiusBottom = 1;
         var cyclHeight = this.length;
         var cyclRadialSegments = 32;
-        var cyclColor = 0x2194ce;
+        var cyclColor = sphereColor;
         var geomCylinder = new THREE.CylinderGeometry( cyclRadiusTop, cyclRadiusBottom, cyclHeight, cyclRadialSegments );
         var matCylinder = new THREE.MeshPhongMaterial( {color: cyclColor} );
         var cylinderTool = new THREE.Mesh( geomCylinder, matCylinder );
@@ -55,16 +55,17 @@ var rigidSurgicalTool = class {
         this.baseCRF = new THREE.AxisHelper( 10 );
         this.baseCRF.matrixAutoUpdate = false;
         this.baseCRF.visible = true;
-        this.mesh.add( this.baseCRF );
+        //this.mesh.add( this.baseCRF );
 
         this.tipCRF = new THREE.AxisHelper( 10 );
         this.tipCRF.matrixAutoUpdate = false;
         this.tipCRF.visible = true;
-        this.mesh.add( this.tipCRF );
+        this.tipCRF.matrix.copy( this.w_M_t );
+        //this.mesh.add( this.tipCRF );
         this.updateToolCRF();
 
 
-        console.log( "initToolCRF: w_M_e = " + this.w_M_e.elements );
+        /*console.log( "initToolCRF: w_M_e = " + this.w_M_e.elements );
         var w_P_e = new THREE.Vector3;
         w_P_e.setFromMatrixPosition( this.w_M_e );
         var w_Q_e = new THREE.Quaternion;
@@ -72,19 +73,18 @@ var rigidSurgicalTool = class {
         //var w_S_e = new THREE.Vector3;
         //this.w_M_e.decompose( w_P_e, w_Q_e, w_S_e );
         console.log( "initToolCRF: w_P_e = " + w_P_e.elements );
-        console.log( "initToolCRF: w_Q_e = " + w_Q_e.elements );
-    }
-
-    updateToolCRF() {
-        this.baseCRF.matrix.copy( this.w_M_e );
-        this.tipCRF.matrix.copy( this.w_M_t );
-        this.sphereBase.matrix.copy( this.w_M_e );
-        //this.mesh.matrix.copy( this.w_M_e );
+        console.log( "initToolCRF: w_Q_e = " + w_Q_e.elements );*/
     }
 
     toggleDisplayToolCRF(){
         this.baseCRF.visible = ! this.baseCRF.visible;
         this.tipCRF.visible = ! this.tipCRF.visible;
+    }
+
+    updateToolCRF() {
+        /*this.baseCRF.matrix.copy( this.w_M_e );
+        this.tipCRF.matrix.copy( this.w_M_t );
+        //this.sphereBase.matrix.copy( this.w_M_e );*/
     }
 
     updateAll() {
@@ -94,16 +94,16 @@ var rigidSurgicalTool = class {
 
         //tranform m in px
         //this.mesh.scale.set(1000,1000,1000);
-        this.mesh.updateMatrix();
+        this.mesh.matrix.copy( this.w_M_e );
+        //this.mesh.updateMatrix();
     }
 
     setEndEffectorPose( w_pose_e ) {
         
-        // var q = new THREE.Quaternion( w_pose_e[3], w_pose_e[4], w_pose_e[5], 1 );
-        // var r = new THREE.Matrix4();
+        //var q = new THREE.Quaternion( w_pose_e[3], w_pose_e[4], w_pose_e[5], 1 );
+        //this.w_M_e.makeRotationFromQuaternion( q );
         var q = new THREE.Euler( w_pose_e[3], w_pose_e[4], w_pose_e[5], 'XYZ' );
         this.w_M_e.makeRotationFromEuler(q);
-        //this.w_M_e.makeRotationFromQuaternion( q );
         this.w_M_e.setPosition( new THREE.Vector3(w_pose_e[0], w_pose_e[1], w_pose_e[2] ));
 
         /*var L1 = this.tubeLength[0] + q[3];        
